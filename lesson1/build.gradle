@@ -1,0 +1,3 @@
+apply plugin: 'application'
+
+mainClassName = 'com.kalita_ivan.gb.lesson1.Application'
