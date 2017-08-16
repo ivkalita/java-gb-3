@@ -36,7 +36,6 @@ public class Application {
         for (T item: arr) {
             list.add(item);
         }
-
         return list;
     }
 
@@ -54,6 +53,7 @@ public class Application {
         System.out.println(String.format("weight the same (1) = %s", orangeBox.compare(appleBox)));
         System.out.println(String.format("weight the same (2) = %s", appleBox.compare(orangeBox)));
         Box<Orange> newOrangeBox = new Box<>();
+        newOrangeBox.add(new Orange());
         orangeBox.moveTo(newOrangeBox);
         System.out.println(String.format("old orange box weight = %f", orangeBox.getWeight()));
         System.out.println(String.format("new orange box weight = %f", newOrangeBox.getWeight()));

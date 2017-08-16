@@ -18,11 +18,11 @@ class Box <T extends Fruit> {
     }
 
     boolean compare(Box<? extends Fruit> box) {
-        return this.getWeight() == box.getWeight();
+        double delta = 1e-5;
+        return Math.abs(this.getWeight() - box.getWeight()) < delta;
     }
 
     void moveTo(Box<T> box) {
-        box.fruits.clear();
         box.fruits.addAll(this.fruits);
         this.fruits.clear();
     }
