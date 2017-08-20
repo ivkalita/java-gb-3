@@ -18,7 +18,7 @@ class GoodCostCommand extends Command {
     }
 
     @Override
-    String execute() {
+    CommandResult execute() {
         StringBuilder out = new StringBuilder();
         try (Connection connection = DatabaseManager.getInstance().getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)
@@ -29,7 +29,7 @@ class GoodCostCommand extends Command {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return out.toString();
+        return new CommandResult(out.toString());
     }
 
     private String stringify(ResultSet result) throws SQLException {

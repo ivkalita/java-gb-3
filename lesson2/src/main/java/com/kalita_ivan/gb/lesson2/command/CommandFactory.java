@@ -11,6 +11,8 @@ class CommandFactory {
         switch (commandName.toString()) {
             case (GoodCostCommand.NAME):
                 return createGoodCostCommand(tokens);
+            case (ExitCommand.NAME):
+                return new ExitCommand();
             default:
                 throw new NotResolvedException();
         }

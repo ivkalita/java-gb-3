@@ -18,7 +18,7 @@ public class CommandRunner {
         TokenParser parser = new TokenParser();
         CommandFactory commandFactory = new CommandFactory();
         while (sc.hasNextLine()) {
-            String commandResult;
+            CommandResult commandResult;
             try {
                 String line = sc.nextLine();
                 Token[] tokens = parser.parse(line);
@@ -26,12 +26,15 @@ public class CommandRunner {
                 commandResult = command.execute();
             }
             catch (Throwable e) {
-                commandResult = String.format("%s\n", e.getMessage());
+                commandResult = new CommandResult(String.format("%s\n", e.getMessage()));
             }
             try {
-                outputStream.write(commandResult.getBytes("UTF-8"));
+                outputStream.write(commandResult.getResult().getBytes("UTF-8"));
             } catch (Throwable e) {
                 e.printStackTrace();
+            }
+            if (commandResult.isAbort()) {
+                break;
             }
         }
     }
