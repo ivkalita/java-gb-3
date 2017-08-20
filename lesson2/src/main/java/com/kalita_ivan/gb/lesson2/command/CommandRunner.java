@@ -14,6 +14,7 @@ public class CommandRunner {
     }
 
     public void run() {
+        displayHelp();
         Scanner sc = new Scanner(inputStream);
         TokenParser parser = new TokenParser();
         CommandFactory commandFactory = new CommandFactory();
@@ -28,14 +29,22 @@ public class CommandRunner {
             catch (Throwable e) {
                 commandResult = new CommandResult(String.format("%s\n", e.getMessage()));
             }
-            try {
-                outputStream.write(commandResult.getResult().getBytes("UTF-8"));
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
+            writeCommandResult(commandResult);
             if (commandResult.isAbort()) {
                 break;
             }
+        }
+    }
+
+    private void displayHelp() {
+        writeCommandResult(new HelpCommand().execute());
+    }
+
+    private void writeCommandResult(CommandResult commandResult) {
+        try {
+            outputStream.write(commandResult.getResult().getBytes("UTF-8"));
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 }
