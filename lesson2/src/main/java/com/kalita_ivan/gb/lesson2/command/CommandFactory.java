@@ -17,6 +17,8 @@ class CommandFactory {
                 return createSetGoodCostCommand(tokens);
             case (SelectGoodsByCostRangeCommand.NAME):
                 return createGoodsByCostRangeCommand(tokens);
+            case (HelpCommand.NAME):
+                return new HelpCommand();
             default:
                 throw new NotResolvedException();
         }
