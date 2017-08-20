@@ -13,6 +13,8 @@ class CommandFactory {
                 return createGoodCostCommand(tokens);
             case (ExitCommand.NAME):
                 return new ExitCommand();
+            case (SetGoodCostCommand.NAME):
+                return createSetGoodCostCommand(tokens);
             default:
                 throw new NotResolvedException();
         }
@@ -23,5 +25,18 @@ class CommandFactory {
             throw new BadArgumentException();
         }
         return new GoodCostCommand(tokens[1].toString());
+    }
+
+    private SetGoodCostCommand createSetGoodCostCommand(Token[] tokens) {
+        if (tokens.length != 3) {
+            throw new BadArgumentException();
+        }
+        try {
+            return new SetGoodCostCommand(tokens[1].toString(), Float.parseFloat(tokens[2].toString()));
+        }
+        catch (NumberFormatException e) {
+            throw new BadArgumentException();
+        }
+
     }
 }

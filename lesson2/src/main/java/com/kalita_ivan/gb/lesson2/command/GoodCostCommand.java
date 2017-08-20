@@ -7,9 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-class GoodCostCommand extends Command {
-    static final String NAME = "/good_cost";
-    static final private String sql = "SELECT id, title, cost FROM goods WHERE LOWER(title) LIKE LOWER(?)";
+class GoodCostCommand extends PreparedStatementCommand {
+    static final String NAME = "/good";
+    private static final String SQL = "SELECT id, good_id, title, cost FROM goods WHERE LOWER(title) LIKE LOWER(?)";
 
     private String goodName;
 
@@ -18,18 +18,15 @@ class GoodCostCommand extends Command {
     }
 
     @Override
-    CommandResult execute() {
-        StringBuilder out = new StringBuilder();
-        try (Connection connection = DatabaseManager.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)
-        ) {
-            statement.setString(1, goodName);
-            ResultSet result = statement.executeQuery();
-            out.append(stringify(result));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return new CommandResult(out.toString());
+    String getSQL() {
+        return SQL;
+    }
+
+    @Override
+    protected CommandResult execute(Connection connection, PreparedStatement statement) throws SQLException {
+        statement.setString(1, goodName);
+        ResultSet result = statement.executeQuery();
+        return new CommandResult(stringify(result));
     }
 
     private String stringify(ResultSet result) throws SQLException {
@@ -38,10 +35,11 @@ class GoodCostCommand extends Command {
         while (result.next()) {
             atLeastOne = true;
             out.append(String.format(
-                "Good id=%d title=%s cost=%.2f\n",
+                "Good id=%d good_id=%d title=%s cost=%.2f\n",
                 result.getInt(1),
-                result.getString(2),
-                result.getInt(3) / 100.0
+                result.getInt(2),
+                result.getString(3),
+                result.getInt(4) / 100.0
             ));
         }
         if (!atLeastOne) {
