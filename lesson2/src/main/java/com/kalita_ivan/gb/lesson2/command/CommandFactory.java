@@ -9,22 +9,24 @@ class CommandFactory {
         }
         Token commandName = tokens[0];
         switch (commandName.toString()) {
-            case (GoodCostCommand.NAME):
+            case (SelectGoodsByTitleCommand.NAME):
                 return createGoodCostCommand(tokens);
             case (ExitCommand.NAME):
                 return new ExitCommand();
             case (SetGoodCostCommand.NAME):
                 return createSetGoodCostCommand(tokens);
+            case (SelectGoodsByCostRangeCommand.NAME):
+                return createGoodsByCostRangeCommand(tokens);
             default:
                 throw new NotResolvedException();
         }
     }
 
-    private GoodCostCommand createGoodCostCommand(Token[] tokens) {
+    private SelectGoodsByTitleCommand createGoodCostCommand(Token[] tokens) {
         if (tokens.length != 2) {
             throw new BadArgumentException();
         }
-        return new GoodCostCommand(tokens[1].toString());
+        return new SelectGoodsByTitleCommand(tokens[1].toString());
     }
 
     private SetGoodCostCommand createSetGoodCostCommand(Token[] tokens) {
@@ -32,11 +34,22 @@ class CommandFactory {
             throw new BadArgumentException();
         }
         try {
-            return new SetGoodCostCommand(tokens[1].toString(), Float.parseFloat(tokens[2].toString()));
+            return new SetGoodCostCommand(tokens[1].toString(), tokens[2].toFloat());
         }
         catch (NumberFormatException e) {
             throw new BadArgumentException();
         }
+    }
 
+    private SelectGoodsByCostRangeCommand createGoodsByCostRangeCommand(Token[] tokens) {
+        if (tokens.length != 3) {
+            throw new BadArgumentException();
+        }
+        try {
+            return new SelectGoodsByCostRangeCommand(tokens[1].toFloat(), tokens[2].toFloat());
+        }
+        catch (NumberFormatException e) {
+            throw new BadArgumentException();
+        }
     }
 }

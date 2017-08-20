@@ -23,8 +23,8 @@ public class SetGoodCostCommand extends PreparedStatementCommand {
 
     @Override
     protected CommandResult execute(Connection connection, PreparedStatement statement) throws SQLException {
-        statement.setInt(1, Math.round(this.cost * 100));
-        statement.setString(2, this.goodName);
+        statement.setInt(1, Math.round(cost * 100));
+        statement.setString(2, goodName);
         int updated = statement.executeUpdate();
         return new CommandResult(String.format("%d rows updated\n", updated));
     }

@@ -11,4 +11,8 @@ class Token {
     public String toString() {
         return this.content;
     }
+
+    float toFloat() {
+        return Float.parseFloat(this.content);
+    }
 }
